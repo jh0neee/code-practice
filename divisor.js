@@ -1,9 +1,10 @@
 function solution(n) {
-    var answer = 0;
-    for(var i = 1; i <= n; i++) {
-        if(n % i == 0) { answer += i; }
+    var answer = [];
+    for(let i = 0; i <= n; i++){
+        if(n % i == 0) { answer.push(i); }
     }
-    return answer;
+    let sum = answer.reduce((sum, cur) => { return sum += cur; }, 0)
+    return sum;
 }
 
 console.log(solution(12));
