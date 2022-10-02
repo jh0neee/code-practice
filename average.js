@@ -5,5 +5,6 @@
     } , 0)
 
     const result = sum / arr.length;
+
     console.log(result);
 
