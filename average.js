@@ -1,10 +1,13 @@
-    arr = [5,5];
+ function solution(arr) {
+        var sum = 0;
+        for(var i=0; i<arr.length; i++) {
+            sum += arr[i];
+        }
+        var result = sum / arr.length;
+        return result;
+    }
 
-    const sum = arr.reduce((sum, cur) => {
-        return sum += cur 
-    } , 0)
+    console.log(solution([1,2,3,4]));
 
-    const result = sum / arr.length;
 
-    console.log(result);
 
