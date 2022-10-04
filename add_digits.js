@@ -1,6 +1,6 @@
 function solution(n)
 {
-    //console.log(typeof(n));
+    // console.log(typeof(n));
     const number = n.toString().split('');
     const answer = number.reduce((sum, cur) => { return sum += parseInt(cur); }, 0);
 
