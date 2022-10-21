@@ -1,8 +1,5 @@
 function solution(price, money, count) {
-    let cnt_price = 0;
-    for(let i = 1; i <= count; i++) {
-        cnt_price += price * i
-    }
+    let cnt_price = (count * (count + 1) / 2) * price;
     return cnt_price < money ? 0 : cnt_price - money ;
 }
 console.log(solution(3, 20, 5));
