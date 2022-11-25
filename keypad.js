@@ -1,95 +1,51 @@
 function solution(numbers, hand) {
-    let dist2 = { 1: 1, 2: 0, 3: 1, 4: 2, 5: 1, 6: 2, 7: 3, 8: 2, 9: 3, 0: 3 };
-    let dist5 = { 1: 2, 2: 1, 3: 2, 4: 1, 5: 0, 6: 1, 7: 2, 8: 1, 9: 2, 0: 2 };
-    let dist8 = { 1: 3, 2: 2, 3: 3, 4: 2, 5: 1, 6: 2, 7: 1, 8: 0, 9: 1, 0: 1 };
-    let dist0 = { 1: 4, 2: 3, 3: 4, 4: 3, 5: 2, 6: 3, 7: 2, 8: 1, 9: 2, 0: 0 };
+    const keypad = {
+        1:[0,3], 2:[1,3], 3:[2,3],
+        4:[0,2], 5:[1,2], 6:[2,2],
+        7:[0,1], 8:[1,1], 9:[2,1],
+        '*':[0,0], 0:[1,0], '#':[2,0],
+    }
+    const len = numbers.length;
+  
     let answer = '';
-    let lastR = 0, lastL = 0;
-    numbers.forEach((elem) => {
-        if (elem === 1 || elem === 4 || elem === 7) {
-            answer += 'L';
-            lastL = elem;
-        }
-        else if (elem === 3 || elem === 6 || elem === 9) {
-            answer += 'R';
-            lastR = elem;
-        }
-        else {
-            if (elem === 2) {
-                if (dist2[lastL] == dist2[lastR]) {
-                    if (hand === "left") {
-                        answer += "L";
-                        lastL = elem;
-                    } else {
-                        answer += "R";
-                        lastR = elem;
-                    }
-                } else {
-                    if (dist2[lastL] > dist2[lastR]) {
-                        answer += "R";
-                        lastR = elem
-                    } else {
-                        answer += "L";
-                        lastL = elem;
-                    }
-                }
-            } else if (elem === 5) {
-                if (dist5[lastL] == dist5[lastR]) {
-                    if (hand === "left") {
-                        answer += "L";
-                        lastL = elem;
-                    } else {
-                        answer += "R";
-                        lastR = elem;
-                    }
-                } else {
-                    if (dist5[lastL] > dist5[lastR]) {
-                        answer += "R";
-                        lastR = elem
-                    } else {
-                        answer += "L";
-                        lastL = elem;
-                    }
-                }
-            } else if (elem === 8) {
-                if (dist8[lastL] == dist8[lastR]) {
-                    if (hand === "left") {
-                        answer += "L";
-                        lastL = elem;
-                    } else {
-                        answer += "R";
-                        lastR = elem;
-                    }
-                } else {
-                    if (dist8[lastL] > dist8[lastR]) {
-                        answer += "R";
-                        lastR = elem
-                    } else {
-                        answer += "L";
-                        lastL = elem;
-                    }
-                }
-            } else if (elem === 0) {
-                if (dist0[lastL] == dist0[lastR]) {
-                    if (hand === "left") {
-                        answer += "L";
-                        lastL = elem;
-                    } else {
-                        answer += "R";
-                        lastR = elem;
-                    }
-                } else {
-                    if (dist0[lastL] > dist0[lastR]) {
-                        answer += "R";
-                        lastR = elem
-                    } else {
-                        answer += "L";
-                        lastL = elem;
-                    }
-                }
-            }
-        }
-    })
+    let leftFinger = '*';
+    let rightFinger = '#';
+  
+    for (let i = 0; i < len; i++) {
+      let num = numbers[i];
+      // 1, 4, 7
+      if (num % 3 === 1) {
+        answer += 'L';
+        leftFinger = num;
+      }
+      // 3, 6, 9
+      else if (num !== 0 && num % 3 === 0) {
+        answer += 'R';
+        rightFinger = num;
+      }
+      // 2, 5, 8, 0
+      else {
+        answer += getDistance(keypad, num, hand, leftFinger, rightFinger);
+        answer[answer.length - 1] === 'L'
+          ? (leftFinger = num)
+          : (rightFinger = num);
+      }
+    }
+  
     return answer;
-}
+  }
+  
+  function getDistance(keypad, num, hand, leftFinger, rightFinger) {
+    const handed = hand === 'left' ? 'L' : 'R';
+    const left =
+      Math.abs(keypad[num][0] - keypad[leftFinger][0]) +
+      Math.abs(keypad[num][1] - keypad[leftFinger][1]);
+    const right =
+      Math.abs(keypad[num][0] - keypad[rightFinger][0]) +
+      Math.abs(keypad[num][1] - keypad[rightFinger][1]);
+  
+    if (left === right) return handed;
+  
+    return left < right ? 'L' : 'R';
+  }
 console.log(solution([5,2,1,6,4,0,8,5,9]));
